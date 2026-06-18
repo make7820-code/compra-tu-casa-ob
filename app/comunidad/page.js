@@ -102,7 +102,7 @@ export default function Comunidad() {
           <aside className="w-full lg:w-80 bg-[#111] border border-white/10 rounded-3xl p-6 h-fit">
             <h4 className="font-bold mb-6">👤 Cuentas Recomendadas</h4>
             <div className="space-y-6">
-              {['Adrian lorenzo', 'Daniel Toussaint Decena', 'adrian1', 'adrian2'].map((n, i) => (
+              {['Daniel Toussaint Decena', 'onlybladi', 'David Montero', 'Gabriel Daniel Montero'].map((n, i) => (
                 <div key={i} className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gray-700"></div>
