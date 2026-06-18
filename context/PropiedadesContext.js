@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { db } from "../../lib/firebase"; // Asegúrate de que esta ruta sea correcta
+import { db } from "../lib/firebase"; // Asegúrate de que esta ruta sea correcta
 import { collection, onSnapshot } from "firebase/firestore";
 
 const PropiedadesContext = createContext();
