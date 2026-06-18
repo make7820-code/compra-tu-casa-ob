@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+// 1. IMPORTA EL PROVIDER
+import { PropiedadesProvider } from "../context/PropiedadesContext"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +24,12 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      {/* 2. ENVUELVE EL CONTENIDO CON EL PROVIDER */}
+      <body className="min-h-full flex flex-col">
+        <PropiedadesProvider>
+          {children}
+        </PropiedadesProvider>
+      </body>
     </html>
   );
 }
