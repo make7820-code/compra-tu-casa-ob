@@ -170,11 +170,21 @@ export default function Agente() {
     e.target.value = '';
   };
 
-  const publicarLocal = () => {
-    const nuevaPropiedad = { id: editandoId || Date.now(), ...datos, imagenes: fotosPrevia };
-    if (editandoId) setPropiedades(propiedades.map(p => p.id === editandoId ? nuevaPropiedad : p));
-    else setPropiedades([...propiedades, nuevaPropiedad]);
-    cancelarOperacion();
+const publicarLocal = async () => {
+    const nuevaPropiedad = { ...datos, imagenes: fotosPrevia };
+    try {
+      if (editandoId) {
+        // Actualiza en Firebase
+        await updateDoc(doc(db, "propiedades", editandoId), nuevaPropiedad);
+      } else {
+        // Crea nuevo en Firebase
+        await addDoc(collection(db, "propiedades"), nuevaPropiedad);
+      }
+      cancelarOperacion();
+      alert("Guardado correctamente");
+    } catch (e) {
+      console.error("Error:", e);
+    }
   };
 
   const cancelarOperacion = () => {
