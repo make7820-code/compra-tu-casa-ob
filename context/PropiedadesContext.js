@@ -1,22 +1,28 @@
 "use client";
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { db } from "../lib/firebase"; // Asegúrate de que esta ruta sea correcta
+import { collection, onSnapshot } from "firebase/firestore";
 
 const PropiedadesContext = createContext();
 
 export function PropiedadesProvider({ children }) {
-  // Intentamos cargar lo que ya existía, o empezamos vacío
-  const [propiedades, setPropiedades] = useState(() => {
-    if (typeof window !== "undefined") {
-      const guardado = localStorage.getItem('misPropiedades');
-      return guardado ? JSON.parse(guardado) : [];
-    }
-    return [];
-  });
+  const [propiedades, setPropiedades] = useState([]);
 
-  // Cada vez que 'propiedades' cambia, se guarda en el navegador
   useEffect(() => {
-    localStorage.setItem('misPropiedades', JSON.stringify(propiedades));
-  }, [propiedades]);
+    // CAMBIA "propiedades" por el nombre exacto de tu colección en Firebase
+    const colRef = collection(db, "propiedades"); 
+
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+      const datos = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      console.log("Datos cargados desde Firebase:", datos);
+      setPropiedades(datos);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <PropiedadesContext.Provider value={{ propiedades, setPropiedades }}>
