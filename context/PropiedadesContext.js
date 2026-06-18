@@ -10,7 +10,7 @@ export function PropiedadesProvider({ children }) {
 
   useEffect(() => {
     // CAMBIA "propiedades" por el nombre exacto de tu colección en Firebase
-    const colRef = collection(db, "propiedades"); 
+    const colRef = collection(db, "solicitudes");
 
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       const datos = snapshot.docs.map(doc => ({
