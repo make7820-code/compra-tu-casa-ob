@@ -28,6 +28,7 @@ export default function Alquiler() {
     habs: "Cualquiera"
   });
   const { propiedades } = usePropiedades();
+console.log("¿Qué hay en propiedades?:", propiedades);
   const [indicesFotos, setIndicesFotos] = useState({});
   const [propiedadSeleccionada, setPropiedadSeleccionada] = useState(null); 
 
