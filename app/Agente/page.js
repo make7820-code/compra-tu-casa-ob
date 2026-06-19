@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { usePropiedades } from '../../context/PropiedadesContext';
 import Navbar from "../../components/Navbar";
+// --- AGREGA ESTAS LÍNEAS ABAJO ---
+import { db } from "../../lib/firebase"; 
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 
 // --- DATOS GEOGRÁFICOS ---
 const DATA_GEO = {
