@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar";
 import { db } from "../../lib/firebase"; 
 import { collection, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
 
+// --- DATOS GEOGRÁFICOS ---
 const DATA_GEO = {
   "Santiago": ["Santiago", "Bisonó", "Jánico", "Licey al Medio", "Puñal", "Sabana Iglesia", "San José de las Matas", "Tamboril", "Villa González"],
   "Puerto Plata": ["Puerto Plata", "Altamira", "Guananico", "Imbert", "Los Hidalgos", "Luperón", "Sosúa", "Villa Isabela", "Villa Montellano"],
@@ -44,6 +45,7 @@ const DATA_GEO = {
 const TIPOS_PROPIEDAD = ["Apartamento", "Casa", "Solar", "Local", "Villa", "Penthouse", "Estudio", "Finca", "Apartaestudio", "Terreno", "Oficina", "Nave Industrial"];
 const ESTADOS = ["Disponible", "En proceso", "Vendida", "Rentada", "Archivada"];
 
+// --- COMPONENTE DE TARJETA ---
 const TarjetaPropiedad = ({ p, onEdit, onDelete, onDuplicate, onArchive }) => {
   const [montado, setMontado] = useState(false);
   const [indiceFoto, setIndiceFoto] = useState(0);
@@ -100,6 +102,7 @@ const TarjetaPropiedad = ({ p, onEdit, onDelete, onDuplicate, onArchive }) => {
   );
 };
 
+// --- COMPONENTE PRINCIPAL ---
 export default function Agente() {
   const { propiedades, setPropiedades } = usePropiedades();
   const [montado, setMontado] = useState(false);
@@ -144,8 +147,8 @@ export default function Agente() {
     setPropiedades(propiedades.map(item => item.id === p.id ? { ...item, estado: 'Archivada' } : item));
   };
 
-  const manejarBorrado = async (id) => {
-    if (window.confirm("¿Seguro que deseas borrar esta propiedad permanentemente?")) {
+  const eliminarPropiedad = async (id) => {
+    if (window.confirm("¿Seguro que deseas borrar esta propiedad?")) {
       try {
         await deleteDoc(doc(db, "propiedades", id));
         setPropiedades(propiedades.filter(x => x.id !== id));
@@ -186,16 +189,15 @@ export default function Agente() {
       if (editandoId) {
         await updateDoc(doc(db, "propiedades", editandoId), nuevaPropiedad);
         setPropiedades(propiedades.map(p => p.id === editandoId ? { ...nuevaPropiedad, id: editandoId } : p));
-        alert("Propiedad actualizada");
       } else {
         const docRef = await addDoc(collection(db, "propiedades"), nuevaPropiedad);
         setPropiedades([...propiedades, { ...nuevaPropiedad, id: docRef.id }]);
-        alert("Propiedad creada con éxito");
       }
       cancelarOperacion();
+      alert("Guardado correctamente");
     } catch (e) {
       console.error("Error:", e);
-      alert("Error al guardar en base de datos");
+      alert("Error al guardar");
     }
   };
 
@@ -244,7 +246,14 @@ export default function Agente() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {propiedadesFiltradas.map((p) => (
-            <TarjetaPropiedad key={p.id} p={p} onEdit={(prop) => { setEditandoId(prop.id); setDatos(prop); setFotosPrevia(prop.imagenes || []); setModalAbierto(true); }} onDelete={manejarBorrado} onDuplicate={handleDuplicate} onArchive={handleArchive} />
+            <TarjetaPropiedad 
+              key={p.id} 
+              p={p} 
+              onEdit={(prop) => { setEditandoId(prop.id); setDatos(prop); setFotosPrevia(prop.imagenes || []); setModalAbierto(true); }} 
+              onDelete={eliminarPropiedad} 
+              onDuplicate={handleDuplicate} 
+              onArchive={handleArchive} 
+            />
           ))}
         </div>
       </div>
