@@ -184,6 +184,7 @@ export default function Agente() {
   };
 
   const publicarLocal = async () => {
+    console.log("Intentando guardar datos:", datos);
     const nuevaPropiedad = { ...datos, imagenes: fotosPrevia };
     try {
       if (editandoId) {
@@ -196,8 +197,8 @@ export default function Agente() {
       cancelarOperacion();
       alert("Guardado correctamente");
     } catch (e) {
-      console.error("Error:", e);
-      alert("Error al guardar");
+      console.error("Error detallado de Firebase:", e);
+      alert("Error al guardar: " + e.message);
     }
   };
 
